@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -8,27 +7,22 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+server = app.server
 
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'title': 'Dash Data Visualization'
-            }
-        }
-    )
+app.layout = html.Div([
+    html.H2('Hello World'),
+    dcc.Dropdown(
+        id='dropdown',
+        options=[{'label': i, 'value': i} for i in ['LA', 'NYC', 'MTL']],
+        value='LA'
+    ),
+    html.Div(id='display-value')
 ])
 
+@app.callback(dash.dependencies.Output('display-value', 'children'),
+              [dash.dependencies.Input('dropdown', 'value')])
+def display_value(value):
+    return 'You have selected "{}"'.format(value)
+
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run_server(host='0.0.0.0', port=port)
+    app.run_server(debug=True)
