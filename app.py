@@ -4,16 +4,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 import pandas as pd
-# TODO
-df_global_confirmed = pd.read_csv('./confirmed_data.csv', index_col=0)
-df_global_deaths = pd.read_csv('./deaths_data.csv', index_col=0)
-df_eu_confirmed = pd.read_csv('./confirmed_eu_data.csv', index_col=0)
-df_eu_deaths = pd.read_csv('./deaths_eu_data.csv', index_col=0)
-
-tr_global_confirmed = [go.Scatter(x=df_global_confirmed.index, y=df_global_confirmed[s].values, name=s, mode='lines') for s in df_global_confirmed.columns]
-tr_global_deaths = [go.Scatter(x=df_global_deaths.index, y=df_global_deaths[s].values, name=s, mode='lines') for s in df_global_deaths.columns]
-tr_eu_confirmed = [go.Scatter(x=df_eu_confirmed.index, y=df_eu_confirmed[s].values, name=s, mode='lines') for s in df_eu_confirmed.columns]
-tr_eu_deaths = [go.Scatter(x=df_eu_deaths.index, y=df_eu_deaths[s].values, name=s, mode='lines') for s in df_eu_deaths.columns]
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -22,66 +12,101 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 app.layout = html.Div(children=[
-    html.H1(children='Covid-19 Dash'),
-
+    html.H1(id='title', children='Covid-19 Dash'),
+    html.Button('Update', id='update-plots', n_clicks=0),
     html.Div(children=[
 
         html.H3('Global Data', style={'text-align': 'center'}),
         html.Div(children = [
             dcc.Graph(
-                    id='global-confirmed',
-                    figure={
-                        'data': tr_global_confirmed,
-                        'layout': {
-                            'title': 'Covid-19 EU-USA Confirmed',
-                            'yaxis': {'type': 'log'}
-
-                        }
-                    }
+                    id='global-confirmed'
                 ),
 
             dcc.Graph(
-                    id='global-deaths',
-                    figure={
-                        'data': tr_global_deaths,
-                        'layout': {
-                            'title': 'Covid-19 EU-USA Deaths',
-                            'yaxis': {'type': 'log'}
-
-                        }
-                    }
+                    id='global-deaths'
                 )
             ]),
 
         html.H3('EU Data', style={'text-align': 'center'}),
         html.Div([
             dcc.Graph(
-                    id='eu-confirmed',
-                    figure={
-                        'data': tr_eu_confirmed,
-                        'layout': {
-                            'title': 'Covid-19 EU Confirmed',
-                            'yaxis': {'type': 'log'}
-
-                        }
-                    }
+                    id='eu-confirmed'
                 ),
 
             dcc.Graph(
-                    id='eu-deaths',
-                    figure={
-                        'data': tr_eu_deaths,
-                        'layout': {
-                            'title': 'Covid-19 EU Deaths',
-                            'yaxis': {'type': 'log'}
-
-                        }
-                    }
+                    id='eu-deaths'
                 )
         ])
     ], style={'columnCount': 2})
 ])
 
+@app.callback(
+    dash.dependencies.Output('global-confirmed', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot1(n_clicks):
+    df = pd.read_csv('./confirmed_data.csv', index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU-USA Confirmed',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('global-deaths', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot2(n_clicks):
+    df = pd.read_csv('./deaths_data.csv', index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU-USA Deaths',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('eu-confirmed', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot3(n_clicks):
+    df = pd.read_csv('./confirmed_eu_data.csv', index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU Confirmed',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('eu-deaths', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot4(n_clicks):
+    df = pd.read_csv('./deaths_eu_data.csv', index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU Deaths',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
 
 if __name__ == '__main__':
     app.run_server(debug=True)
