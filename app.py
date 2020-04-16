@@ -4,7 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 import pandas as pd
-
+# TODO
 df_global_confirmed = pd.read_csv('./confirmed_data.csv', index_col=0)
 df_global_deaths = pd.read_csv('./deaths_data.csv', index_col=0)
 df_eu_confirmed = pd.read_csv('./confirmed_eu_data.csv', index_col=0)
