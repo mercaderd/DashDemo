@@ -24,69 +24,62 @@ server = app.server
 app.layout = html.Div(children=[
     html.H1(children='Covid-19 Dash'),
 
-    html.Div(children='''
-        Daily updated Covid-19 data
-    '''),
-    html.Table(children=[
-        html.Tr(children=[
-            html.Td(children=[
-                dcc.Graph(
-                        id='global-confirmed',
-                        figure={
-                            'data': tr_global_confirmed,
-                            'layout': {
-                                'title': 'Covid-19 EU-USA Confirmed',
-                                'yaxis': {'type': 'log'}
+    html.Div(children=[
 
-                            }
+        html.H3('Global Data', style={'text-align': 'center'}),
+        html.Div(children = [
+            dcc.Graph(
+                    id='global-confirmed',
+                    figure={
+                        'data': tr_global_confirmed,
+                        'layout': {
+                            'title': 'Covid-19 EU-USA Confirmed',
+                            'yaxis': {'type': 'log'}
+
                         }
-                    )
-            ], style={"height" : "40%", "width" : "40%"}),
-            html.Td(children=[
-                dcc.Graph(
-                        id='global-deaths',
-                        figure={
-                            'data': tr_global_deaths,
-                            'layout': {
-                                'title': 'Covid-19 EU-USA Deaths',
-                                'yaxis': {'type': 'log'}
+                    }
+                ),
 
-                            }
+            dcc.Graph(
+                    id='global-deaths',
+                    figure={
+                        'data': tr_global_deaths,
+                        'layout': {
+                            'title': 'Covid-19 EU-USA Deaths',
+                            'yaxis': {'type': 'log'}
+
                         }
-                    )
-            ], style={"height" : "40%", "width" : "40%"})
+                    }
+                )
+            ]),
 
-        ]),
-        html.Tr(children=[
-            html.Td(children=[
-                dcc.Graph(
-                        id='eu-confirmed',
-                        figure={
-                            'data': tr_eu_confirmed,
-                            'layout': {
-                                'title': 'Covid-19 EU Confirmed',
-                                'yaxis': {'type': 'log'}
+        html.H3('EU Data', style={'text-align': 'center'}),
+        html.Div([
+            dcc.Graph(
+                    id='eu-confirmed',
+                    figure={
+                        'data': tr_eu_confirmed,
+                        'layout': {
+                            'title': 'Covid-19 EU Confirmed',
+                            'yaxis': {'type': 'log'}
 
-                            }
                         }
-                    )
-            ], style={"height" : "40%", "width" : "40%"}),
-            html.Td(children=[
-                dcc.Graph(
-                        id='eu-deaths',
-                        figure={
-                            'data': tr_eu_deaths,
-                            'layout': {
-                                'title': 'Covid-19 EU Deaths',
-                                'yaxis': {'type': 'log'}
+                    }
+                ),
 
-                            }
+            dcc.Graph(
+                    id='eu-deaths',
+                    figure={
+                        'data': tr_eu_deaths,
+                        'layout': {
+                            'title': 'Covid-19 EU Deaths',
+                            'yaxis': {'type': 'log'}
+
                         }
-                    )
-            ], style={"height" : "40%", "width" : "40%"})
+                    }
+                )
         ])
-
-    ])
+    ], style={'columnCount': 2})
 ])
 
 
