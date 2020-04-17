@@ -44,7 +44,8 @@ app.layout = html.Div(children=[
     dash.dependencies.Output('global-confirmed', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
 def update_plot1(n_clicks):
-    df = pd.read_csv('./confirmed_data.csv', index_col=0)
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/confirmed_data.csv'
+    df = pd.read_csv(url, index_col=0)
     tr = [
         go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
         df.columns]
@@ -61,7 +62,8 @@ def update_plot1(n_clicks):
     dash.dependencies.Output('global-deaths', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
 def update_plot2(n_clicks):
-    df = pd.read_csv('./deaths_data.csv', index_col=0)
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/deaths_data.csv'
+    df = pd.read_csv(url, index_col=0)
     tr = [
         go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
         df.columns]
@@ -78,7 +80,8 @@ def update_plot2(n_clicks):
     dash.dependencies.Output('eu-confirmed', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
 def update_plot3(n_clicks):
-    df = pd.read_csv('./confirmed_eu_data.csv', index_col=0)
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/confirmed_eu_data.csv'
+    df = pd.read_csv(url, index_col=0)
     tr = [
         go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
         df.columns]
@@ -95,7 +98,8 @@ def update_plot3(n_clicks):
     dash.dependencies.Output('eu-deaths', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
 def update_plot4(n_clicks):
-    df = pd.read_csv('./deaths_eu_data.csv', index_col=0)
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/deaths_eu_data.csv'
+    df = pd.read_csv(url, index_col=0)
     tr = [
         go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
         df.columns]
