@@ -24,6 +24,14 @@ app.layout = html.Div(children=[
 
             dcc.Graph(
                     id='global-deaths'
+                ),
+
+            dcc.Graph(
+                    id='global-recovered'
+                ),
+
+            dcc.Graph(
+                    id='global-conf-rec'
                 )
             ]),
 
@@ -35,7 +43,15 @@ app.layout = html.Div(children=[
 
             dcc.Graph(
                     id='eu-deaths'
-                )
+                ),
+
+            dcc.Graph(
+                    id='eu-recovered'
+            ),
+
+            dcc.Graph(
+                    id='eu-conf-rec'
+            )
         ])
     ], style={'columnCount': 2})
 ])
@@ -77,9 +93,45 @@ def update_plot2(n_clicks):
     }
 
 @app.callback(
-    dash.dependencies.Output('eu-confirmed', 'figure'),
+    dash.dependencies.Output('global-recovered', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
 def update_plot3(n_clicks):
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/recovered_data.csv'
+    df = pd.read_csv(url, index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU-USA Recovered',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('global-conf-rec', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot4(n_clicks):
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/conf_rec_data.csv'
+    df = pd.read_csv(url, index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU-USA Active',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('eu-confirmed', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot5(n_clicks):
     url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/confirmed_eu_data.csv'
     df = pd.read_csv(url, index_col=0)
     tr = [
@@ -97,7 +149,7 @@ def update_plot3(n_clicks):
 @app.callback(
     dash.dependencies.Output('eu-deaths', 'figure'),
     [dash.dependencies.Input('update-plots', 'n_clicks')])
-def update_plot4(n_clicks):
+def update_plot6(n_clicks):
     url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/deaths_eu_data.csv'
     df = pd.read_csv(url, index_col=0)
     tr = [
@@ -107,6 +159,42 @@ def update_plot4(n_clicks):
                 'data': tr,
                 'layout': {
                     'title': 'Covid-19 EU Deaths',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('eu-recovered', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot7(n_clicks):
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/recovered_eu_data.csv'
+    df = pd.read_csv(url, index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU Recovered',
+                    'yaxis': {'type': 'log'}
+
+                }
+    }
+
+@app.callback(
+    dash.dependencies.Output('eu-conf-rec', 'figure'),
+    [dash.dependencies.Input('update-plots', 'n_clicks')])
+def update_plot8(n_clicks):
+    url = 'https://github.com/mercaderd/python-notebooks/raw/master/covid_data_csv/conf_rec_eu_data.csv'
+    df = pd.read_csv(url, index_col=0)
+    tr = [
+        go.Scatter(x=df.index, y=df[s].values, name=s, mode='lines') for s in
+        df.columns]
+    return {
+                'data': tr,
+                'layout': {
+                    'title': 'Covid-19 EU Active',
                     'yaxis': {'type': 'log'}
 
                 }
